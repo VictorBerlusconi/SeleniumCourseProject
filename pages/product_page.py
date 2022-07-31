@@ -2,15 +2,19 @@ from .locators import ProductPageLocators
 from selenium.common.exceptions import NoAlertPresentException
 import math
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from .base_page import BasePage
 
-class ProductPage():
-    def __init__(self, browser, url, timeout=10):
-        self.browser = browser
-        self.url = url
-        self.browser.implicitly_wait(timeout)
+class ProductPage(BasePage):
+    #def __init__(self, browser, url, timeout=10):
+        #self.browser = browser
+        #self.url = url
+        #self.browser.implicitly_wait(timeout)
 
-    def open(self):
-        self.browser.get(self.url)
+    #def open(self):
+        #self.browser.get(self.url)
 
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
@@ -25,13 +29,6 @@ class ProductPage():
             alert.accept()
         except NoAlertPresentException:
             print("No second alert presented")
-
-    def is_element_present(self, how, what):
-        try:
-            self.browser.find_element(how, what)
-        except (NoSuchElementException):
-            return False
-        return True
 
     def click_add_to_cart_button(self):
         button = self.browser.find_element(*ProductPageLocators.ADD_TO_CART_BUTTON)
@@ -54,3 +51,20 @@ class ProductPage():
         price = price_element.text
         assert price in price_in_cart, \
             f"Wrong price is added to cart! Should be {price} instead of {price_in_cart}"
+
+    def is_not_element_present(self, how, what, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return True
+
+        return False
+
+    def is_disappeared(self, how, what, timeout=4):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException). \
+                until_not(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return False
+
+        return True

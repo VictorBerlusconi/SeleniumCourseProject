@@ -14,9 +14,14 @@ class LoginPageLocators:
 class ProductPageLocators:
     PAGE_URL = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
     PAGE_URL2 = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+    PAGE_URL3 = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
     ADD_TO_CART_BUTTON = (By.CSS_SELECTOR, "[value='Добавить в корзину']")
     PRODUCT_NAME = (By.CSS_SELECTOR, "[class='col-sm-6 product_main'] h1")
     MESSAGE = (By.CSS_SELECTOR, "[class='alertinner ']") #selector is not unique, use find_elements
     PRICE = (By.CSS_SELECTOR, "[class='col-sm-6 product_main'] .price_color")
     PRICE_IN_CART = (By.CSS_SELECTOR, "[class = 'alert alert-safe alert-noicon alert-info  fade in'] strong")
 
+
+class BasePageLocators:
+    LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
+    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
